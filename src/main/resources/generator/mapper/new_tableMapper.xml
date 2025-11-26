@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.new_tableMapper">
+
+    <resultMap id="BaseResultMap" type="generator.domain.new_table">
+            <id property="id" column="id" />
+            <result property="a1" column="a1" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,a1
+    </sql>
+</mapper>
