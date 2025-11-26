@@ -1,7 +1,7 @@
 package com.example.demo;
 import generator.domain.new_table;
 import generator.service.new_tableService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -26,20 +26,20 @@ import java.util.List;
 @MapperScan("generator.mapper")
 public class DemoApplication {
 
-	@Autowired
-	private new_tableService aaa;
+//	@Autowired
+//	private new_tableService aaa;
 
 	public static void main(String[] args) {
 		String bootVersion = SpringBootVersion.getVersion();
 		System.out.println("Spring Boot 版本：" + bootVersion);
 		SpringApplication.run(DemoApplication.class, args);
 	}
-	@ApiOperation("测试test")
+	@Operation(summary = "测试test", description = "查询数据并返回问候语")
 	@GetMapping("/hello")
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-		 long count= aaa.count();
-		List<new_table> list = aaa.list();
-		String str= String.format("<UNK>%s<UNK>", list.get(0).getA1());
+//		 long count= aaa.count();
+//		List<new_table> list = aaa.list();
+		String str= String.format("<UNK>%s<UNK>", name);
 		return String.format(str+"Hello %s!", name);
 	}
 
