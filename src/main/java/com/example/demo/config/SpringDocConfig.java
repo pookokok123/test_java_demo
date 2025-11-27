@@ -27,7 +27,7 @@ public class SpringDocConfig {
 
         // 2. 配置文档基本信息（对应旧配置的 apiInfo()）
         Info info = new Info()
-                .title("标题：若依管理系统_接口文档") // 旧配置的 title
+                .title("标题：管理系统_接口文档") // 旧配置的 title
                 .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...") // 旧配置的 description
                 .contact(new Contact() // 旧配置的 contact（作者信息，null 可保留）
                         .name(null)

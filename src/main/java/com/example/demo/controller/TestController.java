@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.util.JwtUtil;
 import generator.domain.new_table;
 import generator.service.new_tableService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,16 +25,18 @@ public class TestController {
     @Autowired
     private new_tableService aaa;
 
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Operation(summary = "测试test1", description = "查询数据并返回问候语")
     @GetMapping("/test")
     public String hello(@RequestParam(value = "name", defaultValue = "test") String name) {
        long count= aaa.count();//aba
 
-
+        String token = jwtUtil.generateToken("admin");
         List<new_table> list = aaa.list();
         String str= String.format("<UNK>%s<UNK>", list.get(0).getA1());
-        return String.format(str+"Hello %s!", name);
+        return String.format(str+"Hello %s!|"+token, name);
     }
 
 }
