@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,7 @@ import java.util.Map;
  */
 @RestController
 @Tag(name = "登录模块", description = "用户登录获取 Token")
+@RequestMapping("/Login")
 public class LoginController {
 
     @Autowired
@@ -27,8 +29,8 @@ public class LoginController {
     @PostMapping("/login")
     @Operation(summary = "用户登录", description = "输入用户名密码，获取 Token（测试用：admin/123456）")
     public Map<String, Object> login(
-            @RequestParam String username,
-            @RequestParam String password
+            @RequestParam(defaultValue = "admin") String username,
+            @RequestParam(defaultValue = "123456") String password
     ) {
         Map<String, Object> result = new HashMap<>();
 
@@ -41,7 +43,8 @@ public class LoginController {
             result.put("code", 200);
             result.put("msg", "登录成功");
             result.put("token", token);
-            result.put("expiration", jwtUtil.extractExpiration(token)); // Token 过期时间
+            result.put("expiration", jwtUtil.extractExpiration(token));
+            result.put("token2","Bearer "+token);
         } else {
             result.put("code", 401);
             result.put("msg", "用户名或密码错误");
