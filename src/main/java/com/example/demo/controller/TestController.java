@@ -20,7 +20,7 @@ import java.util.List;
 @SpringBootApplication
 @RestController
 @Tag(name = "用户管理与商品查询接口", description = "包含用户CRUD、商品模糊查询等核心业务接口")
-@RequestMapping("/api")
+@RequestMapping("/Test")
 public class TestController {
     @Autowired
     private new_tableService aaa;
@@ -37,6 +37,13 @@ public class TestController {
         List<new_table> list = aaa.list();
         String str= String.format("<UNK>%s<UNK>", list.get(0).getA1());
         return String.format(str+"Hello %s!|"+token, name);
+    }
+
+    @Operation(summary = "测试test2")
+    @GetMapping("/GetTest")
+    public String GetTest(@RequestParam(value = "name", defaultValue = "test") String name)
+    {
+        return name;
     }
 
 }
