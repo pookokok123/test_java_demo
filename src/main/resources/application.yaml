@@ -33,4 +33,6 @@ jwt:
 logging:
   level:
     org.springframework.security: DEBUG
-    com.example.demo: INFO
+    com.example.demo: DEBUG
+      # Spring Security 核心认证类：打印用户名、密码比对过程
+    org.springframework.security.authentication.dao.DaoAuthenticationProvider: DEBUG

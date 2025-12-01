@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.util.JwtUtil;
 import generator.domain.new_table;
+import generator.domain.sys_user;
 import generator.service.new_tableService;
+import generator.service.sys_userService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mybatis.spring.annotation.MapperScan;
@@ -28,10 +30,19 @@ public class TestController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private sys_userService userService;
+
     @Operation(summary = "测试test1", description = "查询数据并返回问候语")
     @GetMapping("/test")
     public String hello(@RequestParam(value = "name", defaultValue = "test") String name) {
        long count= aaa.count();//aba
+
+        sys_user aa=new sys_user();
+        aa.setUsername(name);
+        aa.setPassword("123456");
+
+        sys_user user= userService.selectByUserName(name);
 
         String token = jwtUtil.generateToken("admin");
         List<new_table> list = aaa.list();

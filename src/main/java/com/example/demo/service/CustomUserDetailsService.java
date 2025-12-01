@@ -1,6 +1,9 @@
 package com.example.demo.service;
 
 
+import generator.domain.sys_user;
+import generator.service.sys_userService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,17 +18,20 @@ import java.util.Arrays;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    @Autowired
+    private sys_userService userService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 1. 从数据库查询用户
-//        User user = userMapper.selectByUsername(username);
-//        if (user == null) {
-//            throw new UsernameNotFoundException("用户名不存在或已禁用");
-//        }
+        sys_user user = userService.selectByUserName(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("<UNK>用户名不存在或已禁用");
+        }
 
-        String getRole="admin";
-        String getUsername="admin1";
-        String getPassword="123456";
+        String getRole = user.getRole();
+        String getUsername = user.getUsername();
+        String getPassword = user.getPassword();
 
         // 2. 转换角色为Spring Security的权限（角色需加ROLE_前缀）
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -44,7 +50,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .accountExpired(false)         // 账号未过期
                 .accountLocked(false)          // 账号未锁定
                 .credentialsExpired(false)     // 密码未过期
-                //.enabled(true)                 // 账号启用
+                .disabled(false)                 // 账号启用
                 .build();
     }
 }

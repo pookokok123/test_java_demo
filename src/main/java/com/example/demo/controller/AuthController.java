@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.util.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,31 +33,43 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // 登录接口：POST /api/auth/login
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest loginRequest) {
-//        // 1. 验证用户名密码（数据库中的用户）
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-//        );
-//
-//        // 2. 设置认证信息
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 1. 验证用户名密码（数据库中的用户）
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+        );
+
+        // 2. 设置认证信息
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 3. 生成JWT Token
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-        String token = jwtUtils.generateToken(userDetails);
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
+            String token = jwtUtils.generateToken(userDetails);
 
-        // 4. 返回结果给前端
-        Map<String, Object> response = new HashMap<>();
-        response.put("code", 200);
-        response.put("msg", "登录成功");
-        response.put("token", token);
-        response.put("username", userDetails.getUsername());
-        response.put("roles", userDetails.getAuthorities().stream()
-                .map(auth -> auth.getAuthority().replace("ROLE_", "")) // 去除ROLE_前缀
-                .collect(Collectors.toList()));
-        return ResponseEntity.ok(response);
+            // 4. 返回结果给前端
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 200);
+            response.put("msg", "登录成功");
+            response.put("token", token);
+            response.put("username", userDetails.getUsername());
+            response.put("roles", userDetails.getAuthorities().stream()
+                    .map(auth -> auth.getAuthority().replace("ROLE_", "")) // 去除ROLE_前缀
+                    .collect(Collectors.toList()));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 500);
+            response.put("msg", e);
+            return ResponseEntity.ok(response);
+        }
+
     }
 
     // 退出接口：POST /api/auth/logout（前端删除Token即可）
@@ -73,9 +87,20 @@ public class AuthController {
         private String password;
 
         // getter/setter
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 }
