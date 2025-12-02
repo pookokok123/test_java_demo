@@ -1,21 +1,18 @@
 package com.example.demo.controller;
 
-import com.example.demo.util.JwtUtil;
+import com.example.demo.util.JwtUtils;
 import generator.domain.new_table;
 import generator.domain.sys_user;
 import generator.service.new_tableService;
 import generator.service.sys_userService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -28,7 +25,7 @@ public class TestController {
     private new_tableService aaa;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtils jwtUtil;
 
     @Autowired
     private sys_userService userService;
@@ -44,7 +41,7 @@ public class TestController {
 
         sys_user user= userService.selectByUserName(name);
 
-        String token = jwtUtil.generateToken("admin");
+        String token = jwtUtil.getUsernameFromToken("admin");
         List<new_table> list = aaa.list();
         String str= String.format("<UNK>%s<UNK>", list.get(0).getA1());
         return String.format(str+"Hello %s!|"+token, name);

@@ -63,4 +63,5 @@ public class JwtUtils {
     private SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
+
 }

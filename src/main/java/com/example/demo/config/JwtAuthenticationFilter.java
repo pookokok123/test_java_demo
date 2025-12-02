@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.util.JwtUtil;
+import com.example.demo.util.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,12 +18,12 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtils;
+    private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
     // 构造器注入（Spring 6.x推荐构造器注入）
-    public JwtAuthenticationFilter(JwtUtil jwtUtils, UserDetailsService userDetailsService) {
-        this.jwtUtils = jwtUtils;
+    public JwtAuthenticationFilter(JwtUtils JwtUtils, UserDetailsService userDetailsService) {
+        this.jwtUtils = JwtUtils;
         this.userDetailsService = userDetailsService;
     }
 
@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             // 2. 验证Token是否有效
             if (token != null) {
-                String username = jwtUtils.extractUsername(token);
+                String username = jwtUtils.getUsernameFromToken(token);
                 // 3. 从数据库/内存加载用户信息（UserDetailsService）
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
