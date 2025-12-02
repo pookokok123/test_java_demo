@@ -20,7 +20,6 @@ import java.util.function.Function;
 @Component
 public class JwtUtil
 {
-
     // 签名密钥（必须复杂！建议配置在 application.yml 中，避免硬编码）
     @Value("${jwt.secret:q3t6w9z$C&F)J@NcRfUjXn2r5u8x/A?D*G-KaPdSgVkYp3s6v9y$B&E)H+MbQeThWmZq4t7w!z%C}")
     private String secret;
