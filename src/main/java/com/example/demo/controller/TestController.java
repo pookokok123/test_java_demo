@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.demo.util.JwtUtils;
 import generator.domain.new_table;
 import generator.domain.sys_user;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequestMapping("/Test")
 public class TestController {
     @Autowired
-    private new_tableService aaa;
+    private new_tableService tableService;
 
     @Autowired
     private JwtUtils jwtUtil;
@@ -33,7 +34,7 @@ public class TestController {
     @Operation(summary = "测试test1", description = "查询数据并返回问候语")
     @GetMapping("/test")
     public String hello(@RequestParam(value = "name", defaultValue = "test") String name) {
-       long count= aaa.count();//aba
+       long count= tableService.count();//aba
 
         sys_user aa=new sys_user();
         aa.setUsername(name);
@@ -42,7 +43,7 @@ public class TestController {
         sys_user user= userService.selectByUserName(name);
 
         String token = jwtUtil.getUsernameFromToken("admin");
-        List<new_table> list = aaa.list();
+        List<new_table> list = tableService.list();
         String str= String.format("<UNK>%s<UNK>", list.get(0).getA1());
         return String.format(str+"Hello %s!|"+token, name);
     }
@@ -52,6 +53,13 @@ public class TestController {
     public String GetTest(@RequestParam(value = "name", defaultValue = "test") String name)
     {
         return name;
+    }
+
+    @GetMapping("/page")
+    public IPage<new_table> GetPage(
+            @RequestParam(defaultValue = "1") Integer pageNum, // 默认第1页
+            @RequestParam(defaultValue = "10") Integer pageSize) { // 默认每页10条
+        return tableService.GetPage(pageNum, pageSize);
     }
 
 }

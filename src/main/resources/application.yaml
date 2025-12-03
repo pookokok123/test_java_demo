@@ -6,7 +6,7 @@ spring:
     url: jdbc:mysql://localhost:3306/test1?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root # 你的MySQL用户名
     password: 123456 # 你的MySQL密码
-    driver-class-name: com.mysql.cj.jdbc.Driver # MySQL8.x驱动（5.x用 com.mysql.jdbc.Dr
+    driver-class-name: com.mysql.cj.jdbc.Driver # MySQL8.x驱动
 # springdoc-openapi项目配置
 springdoc:
   swagger-ui:
@@ -36,3 +36,7 @@ logging:
     com.example.demo: DEBUG
       # Spring Security 核心认证类：打印用户名、密码比对过程
     org.springframework.security.authentication.dao.DaoAuthenticationProvider: DEBUG
+
+mybatis-plus:
+  global-config:
+    banner: false  # 关闭 MyBatis-Plus 的启动 Logo
