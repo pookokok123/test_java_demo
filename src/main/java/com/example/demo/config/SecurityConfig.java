@@ -62,7 +62,7 @@ public class SecurityConfig {
                         ).permitAll() // 允许匿名访问
                         .requestMatchers("/api/auth/**").permitAll()
                         // 2. 放行测试接口（可选，根据你的业务调整）
-                        .requestMatchers("/Test/test").permitAll()
+                        .requestMatchers("/api/test/page").permitAll()
                         // 3. 其他所有接口需要认证（登录后才能访问）
                         .anyRequest().authenticated()
                 )

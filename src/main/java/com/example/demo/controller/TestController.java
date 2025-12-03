@@ -20,7 +20,7 @@ import java.util.List;
 @SpringBootApplication
 @RestController
 @Tag(name = "用户管理与商品查询接口", description = "包含用户CRUD、商品模糊查询等核心业务接口")
-@RequestMapping("/Test")
+@RequestMapping("/api/test")
 public class TestController {
     @Autowired
     private new_tableService tableService;
