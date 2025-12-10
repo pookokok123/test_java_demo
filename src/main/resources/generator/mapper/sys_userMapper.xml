@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.sys_userMapper">
+
+    <resultMap id="BaseResultMap" type="generator.domain.sys_user">
+            <id property="id" column="id" />
+            <result property="username" column="username" />
+            <result property="password" column="password" />
+            <result property="role" column="role" />
+            <result property="status" column="status" />
+            <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,password,role,status,create_time
+    </sql>
+    
+    <sql id="select_user_vo">
+        select id,username,password,role,status,create_time from sys_user
+    </sql>
+
+    <select id="selectByUser" parameterType="generator.domain.sys_user" resultMap="BaseResultMap">
+        <include refid="select_user_vo"/>
+        <where>
+            <if test="username != null and username != ''">
+                AND username like concat('%', #{username}, '%')
+            </if>
+            <if test="password != null and password != ''">
+                AND password = #{password}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -6,4 +6,37 @@ spring:
     url: jdbc:mysql://localhost:3306/test1?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root # 你的MySQL用户名
     password: 123456 # 你的MySQL密码
-    driver-class-name: com.mysql.cj.jdbc.Driver # MySQL8.x驱动（5.x用 com.mysql.jdbc.Dr
+    driver-class-name: com.mysql.cj.jdbc.Driver # MySQL8.x驱动
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.example.demo
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+# JWT配置
+jwt:
+  secret: rMZ+Qf+z9X7yW3m5K8p0L2n4P6r8t0v2x4z6A8s0d2f4g6h8j0k2l4m6n8p0q2r4t6v8x0y2z4A6B8C0D2E4F6G8H0J2K4L6M8N0P2Q4R6S8T0V2W4X6Y8Z0A2B4C6D8E0F2G4H6J8K0L2M4N6P8Q  # 至少32位，生产环境用复杂密钥
+  expiration: 72000000  # Token有效期：2小时（毫秒）
+
+# 日志配置（方便调试Security流程）
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.example.demo: DEBUG
+      # Spring Security 核心认证类：打印用户名、密码比对过程
+    org.springframework.security.authentication.dao.DaoAuthenticationProvider: DEBUG
+
+mybatis-plus:
+  global-config:
+    banner: false  # 关闭 MyBatis-Plus 的启动 Logo
